@@ -60,21 +60,27 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
         /* Clouds */
         .cloud {
             position: absolute;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50px;
             animation: cloudFloat linear infinite;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
         }
 
-        .cloud::before, .cloud::after {
-            content: '';
+        .cloud-part {
             position: absolute;
-            background: inherit;
+            background: linear-gradient(180deg, #ffffff 0%, #f0f0f0 50%, #e8e8e8 100%);
+            border-radius: 50%;
+            box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.05),
+                        inset 5px 5px 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .cloud-highlight {
+            position: absolute;
+            background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 70%);
             border-radius: 50%;
         }
 
         @keyframes cloudFloat {
-            0% { transform: translateX(-200px); }
-            100% { transform: translateX(calc(100vw + 200px)); }
+            0% { transform: translateX(-300px); }
+            100% { transform: translateX(calc(100vw + 300px)); }
         }
 
         /* Ground */
@@ -99,10 +105,22 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
             background-size: 100px 40px;
         }
 
+        /* Grass details on ground */
+        .grass {
+            position: absolute;
+            bottom: 14%;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30'%3E%3Cpath d='M5,30 Q5,15 8,10 Q5,15 5,30' fill='%23654321' opacity='0.6'/%3E%3Cpath d='M15,30 Q14,10 18,5 Q16,12 15,30' fill='%23704214' opacity='0.5'/%3E%3Cpath d='M25,30 Q26,18 23,12 Q25,18 25,30' fill='%23654321' opacity='0.6'/%3E%3Cpath d='M35,30 Q34,12 38,8 Q36,14 35,30' fill='%23704214' opacity='0.5'/%3E%3Cpath d='M45,30 Q46,16 43,10 Q45,16 45,30' fill='%23654321' opacity='0.6'/%3E%3Cpath d='M55,30 Q54,14 58,6 Q56,14 55,30' fill='%23704214' opacity='0.5'/%3E%3Cpath d='M65,30 Q66,18 63,11 Q65,17 65,30' fill='%23654321' opacity='0.6'/%3E%3Cpath d='M75,30 Q74,12 78,7 Q76,13 75,30' fill='%23704214' opacity='0.5'/%3E%3Cpath d='M85,30 Q86,16 83,9 Q85,15 85,30' fill='%23654321' opacity='0.6'/%3E%3Cpath d='M95,30 Q94,14 98,8 Q96,14 95,30' fill='%23704214' opacity='0.5'/%3E%3C/svg%3E") repeat-x;
+            background-size: 100px 30px;
+            pointer-events: none;
+        }
+
         /* Leaf pile on ground */
         .leaf-pile {
             position: absolute;
-            bottom: 12%;
+            bottom: 13%;
             width: 100%;
             height: 60px;
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cellipse cx='30' cy='25' rx='25' ry='10' fill='%23D2691E' opacity='0.8'/%3E%3Cellipse cx='80' cy='20' rx='30' ry='12' fill='%23CD853F' opacity='0.7'/%3E%3Cellipse cx='140' cy='25' rx='28' ry='10' fill='%23B8860B' opacity='0.8'/%3E%3Cellipse cx='180' cy='22' rx='20' ry='8' fill='%23DAA520' opacity='0.7'/%3E%3C/svg%3E") repeat-x;
@@ -112,28 +130,74 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
         /* Trees */
         .tree {
             position: absolute;
-            bottom: 14%;
+            z-index: 10;
         }
 
         .tree-trunk {
-            width: 30px;
-            height: 150px;
-            background: linear-gradient(90deg, #4a3728 0%, #6B4423 50%, #4a3728 100%);
-            margin: 0 auto;
-            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #3d2817 0%, #5D4037 20%, #6B4423 50%, #5D4037 80%, #3d2817 100%);
+            border-radius: 5px 5px 0 0;
+            box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.3),
+                        inset 5px 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .tree-trunk::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 10%;
+            width: 80%;
+            height: 60%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 10px,
+                rgba(0, 0, 0, 0.1) 10px,
+                rgba(0, 0, 0, 0.1) 12px
+            );
+        }
+
+        .tree-roots {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 15px;
+            background: radial-gradient(ellipse at center bottom, #3d2817 0%, transparent 70%);
         }
 
         .tree-crown {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin-left: -45px;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        .tree-leaves {
+        .crown-layer {
             position: absolute;
             border-radius: 50%;
-            background: radial-gradient(ellipse at center, var(--leaf-color) 0%, var(--leaf-dark) 100%);
+            background: radial-gradient(ellipse at 30% 30%, var(--leaf-light) 0%, var(--leaf-color) 40%, var(--leaf-dark) 100%);
+            box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.2),
+                        inset 5px 5px 15px rgba(255, 255, 255, 0.2),
+                        3px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .crown-detail {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at 40% 40%, var(--detail-light) 0%, var(--detail-color) 50%, var(--detail-dark) 100%);
+            box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.15),
+                        inset 3px 3px 8px rgba(255, 255, 255, 0.15);
+        }
+
+        .crown-highlight {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
         }
 
         /* Leaves Canvas */
@@ -144,6 +208,7 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 20;
         }
 
         /* Control Panel */
@@ -314,17 +379,6 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
             .wind-arrow {
                 font-size: 1.5rem;
             }
-
-            .tree-trunk {
-                width: 20px;
-                height: 100px;
-            }
-
-            .tree-crown {
-                width: 80px;
-                height: 80px;
-                margin-left: -30px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -380,7 +434,7 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
                 bottom: 18%;
             }
 
-            .tree {
+            .grass {
                 bottom: 19%;
             }
         }
@@ -401,6 +455,7 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
             border-radius: 50%;
             pointer-events: none;
             animation: sparkle 1s ease-out forwards;
+            z-index: 25;
         }
 
         @keyframes sparkle {
@@ -466,6 +521,7 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
 
         <!-- Ground -->
         <div class="ground"></div>
+        <div class="grass"></div>
         <div class="leaf-pile"></div>
 
         <!-- Leaves Canvas -->
@@ -548,6 +604,15 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
             { emoji: '🍃', colors: ['#9ACD32', '#6B8E23', '#556B2F'] },
             { emoji: '🌿', colors: ['#228B22', '#32CD32', '#90EE90'] },
             { emoji: '☘️', colors: ['#2E8B57', '#3CB371', '#20B2AA'] }
+        ];
+
+        // Tree color schemes
+        const TREE_COLORS = [
+            { light: '#E8A849', color: '#D2691E', dark: '#8B4513', detailLight: '#F4C67A', detailColor: '#DAA520', detailDark: '#B8860B' },
+            { light: '#FF7F50', color: '#FF6347', dark: '#CD5C5C', detailLight: '#FFA07A', detailColor: '#E9967A', detailDark: '#CD5C5C' },
+            { light: '#F0C674', color: '#DAA520', dark: '#B8860B', detailLight: '#FFD700', detailColor: '#FFC125', detailDark: '#CD950C' },
+            { light: '#DEB887', color: '#CD853F', dark: '#A0522D', detailLight: '#F5DEB3', detailColor: '#D2B48C', detailDark: '#8B7355' },
+            { light: '#FA8072', color: '#E9967A', dark: '#CD5C5C', detailLight: '#FFA07A', detailColor: '#F08080', detailDark: '#BC8F8F' }
         ];
 
         // ==================== State Management ====================
@@ -799,19 +864,55 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
                     const cloud = document.createElement('div');
                     cloud.className = 'cloud';
                     
-                    const size = 60 + Math.random() * 80;
+                    const baseSize = 80 + Math.random() * 100;
                     const top = 5 + Math.random() * 20;
-                    const duration = 60 + Math.random() * 40;
-                    const delay = Math.random() * -60;
+                    const duration = 80 + Math.random() * 60;
+                    const delay = Math.random() * -80;
+                    const opacity = 0.7 + Math.random() * 0.3;
                     
                     cloud.style.cssText = `
-                        width: ${size}px;
-                        height: ${size * 0.6}px;
                         top: ${top}%;
                         animation-duration: ${duration}s;
                         animation-delay: ${delay}s;
-                        opacity: ${0.5 + Math.random() * 0.3};
+                        opacity: ${opacity};
                     `;
+                    
+                    // Create detailed cloud structure
+                    const cloudParts = [
+                        { x: 0, y: 20, w: baseSize * 0.8, h: baseSize * 0.5 },
+                        { x: baseSize * 0.3, y: 10, w: baseSize * 0.9, h: baseSize * 0.6 },
+                        { x: baseSize * 0.7, y: 15, w: baseSize * 0.7, h: baseSize * 0.5 },
+                        { x: baseSize * 0.15, y: 0, w: baseSize * 0.6, h: baseSize * 0.5 },
+                        { x: baseSize * 0.5, y: 5, w: baseSize * 0.5, h: baseSize * 0.4 },
+                        { x: baseSize * 0.9, y: 25, w: baseSize * 0.5, h: baseSize * 0.35 },
+                        { x: -baseSize * 0.1, y: 30, w: baseSize * 0.4, h: baseSize * 0.3 }
+                    ];
+                    
+                    cloudParts.forEach((part, index) => {
+                        const cloudPart = document.createElement('div');
+                        cloudPart.className = 'cloud-part';
+                        cloudPart.style.cssText = `
+                            left: ${part.x}px;
+                            top: ${part.y}px;
+                            width: ${part.w}px;
+                            height: ${part.h}px;
+                            z-index: ${10 - index};
+                        `;
+                        cloud.appendChild(cloudPart);
+                        
+                        // Add highlight
+                        if (index < 3) {
+                            const highlight = document.createElement('div');
+                            highlight.className = 'cloud-highlight';
+                            highlight.style.cssText = `
+                                left: ${part.x + part.w * 0.1}px;
+                                top: ${part.y + part.h * 0.1}px;
+                                width: ${part.w * 0.6}px;
+                                height: ${part.h * 0.6}px;
+                            `;
+                            cloud.appendChild(highlight);
+                        }
+                    });
                     
                     scene.appendChild(cloud);
                     this.clouds.push(cloud);
@@ -826,55 +927,129 @@ Copyright (c) 2025 Yuliya Kolesnikova <0009-0000-6151-7415@orcid.org>
                 
                 if (!CONFIG.showTrees) return;
                 
-                const treeCount = Math.max(2, Math.floor(this.canvas.width / 300));
+                const groundHeight = this.canvas.height * 0.15;
+                const treeCount = Math.max(2, Math.floor(this.canvas.width / 250));
                 const spacing = this.canvas.width / (treeCount + 1);
                 
                 for (let i = 0; i < treeCount; i++) {
                     const tree = document.createElement('div');
                     tree.className = 'tree';
                     
-                    const x = spacing * (i + 1) + (Math.random() - 0.5) * 100;
-                    const scale = 0.7 + Math.random() * 0.6;
+                    const x = spacing * (i + 1) + (Math.random() - 0.5) * 80;
+                    const scale = 0.6 + Math.random() * 0.5;
+                    const treeHeight = 180 * scale;
+                    const trunkHeight = 120 * scale;
+                    const trunkWidth = 25 * scale;
+                    const crownSize = 140 * scale;
                     
                     tree.style.cssText = `
                         left: ${x}px;
-                        transform: scale(${scale});
-                        z-index: ${Math.floor(scale * 10)};
+                        bottom: ${groundHeight - 5}px;
+                        width: ${trunkWidth}px;
+                        height: ${treeHeight}px;
                     `;
                     
-                    // Create tree structure
-                    const colors = [
-                        { main: '#D2691E', dark: '#8B4513' },
-                        { main: '#FF6347', dark: '#CD5C5C' },
-                        { main: '#DAA520', dark: '#B8860B' },
-                        { main: '#CD853F', dark: '#A0522D' }
+                    // Select color scheme
+                    const colors = TREE_COLORS[Math.floor(Math.random() * TREE_COLORS.length)];
+                    
+                    // Create trunk
+                    const trunk = document.createElement('div');
+                    trunk.className = 'tree-trunk';
+                    trunk.style.cssText = `
+                        width: ${trunkWidth}px;
+                        height: ${trunkHeight}px;
+                    `;
+                    tree.appendChild(trunk);
+                    
+                    // Create roots
+                    const roots = document.createElement('div');
+                    roots.className = 'tree-roots';
+                    roots.style.width = `${trunkWidth * 2.5}px`;
+                    tree.appendChild(roots);
+                    
+                    // Create crown container
+                    const crown = document.createElement('div');
+                    crown.className = 'tree-crown';
+                    crown.style.cssText = `
+                        width: ${crownSize}px;
+                        height: ${crownSize}px;
+                        bottom: ${trunkHeight - 20}px;
+                    `;
+                    
+                    // Create multiple crown layers for depth
+                    const crownLayers = [
+                        { x: 0, y: 30, w: crownSize * 0.9, h: crownSize * 0.7 },
+                        { x: -20, y: 50, w: crownSize * 0.7, h: crownSize * 0.55 },
+                        { x: 30, y: 45, w: crownSize * 0.65, h: crownSize * 0.5 },
+                        { x: 5, y: 10, w: crownSize * 0.75, h: crownSize * 0.6 },
+                        { x: -10, y: 0, w: crownSize * 0.6, h: crownSize * 0.5 },
+                        { x: 25, y: 5, w: crownSize * 0.55, h: crownSize * 0.45 }
                     ];
-                    const color = colors[Math.floor(Math.random() * colors.length)];
                     
-                    tree.innerHTML = `
-                        <div class="tree-crown">
-                            <div class="tree-leaves" style="
-                                width: 100px; height: 100px;
-                                top: 20px; left: 10px;
-                                --leaf-color: ${color.main};
-                                --leaf-dark: ${color.dark};
-                            "></div>
-                            <div class="tree-leaves" style="
-                                width: 80px; height: 80px;
-                                top: 0; left: 30px;
-                                --leaf-color: ${color.main};
-                                --leaf-dark: ${color.dark};
-                            "></div>
-                            <div class="tree-leaves" style="
-                                width: 70px; height: 70px;
-                                top: 40px; left: 50px;
-                                --leaf-color: ${color.main};
-                                --leaf-dark: ${color.dark};
-                            "></div>
-                        </div>
-                        <div class="tree-trunk"></div>
-                    `;
+                    crownLayers.forEach((layer, index) => {
+                        const crownLayer = document.createElement('div');
+                        crownLayer.className = 'crown-layer';
+                        crownLayer.style.cssText = `
+                            left: ${layer.x}px;
+                            top: ${layer.y}px;
+                            width: ${layer.w}px;
+                            height: ${layer.h}px;
+                            --leaf-light: ${colors.light};
+                            --leaf-color: ${colors.color};
+                            --leaf-dark: ${colors.dark};
+                            z-index: ${10 - index};
+                        `;
+                        crown.appendChild(crownLayer);
+                    });
                     
+                    // Add detail clusters
+                    const detailClusters = [
+                        { x: 15, y: 25, w: crownSize * 0.35, h: crownSize * 0.3 },
+                        { x: 50, y: 35, w: crownSize * 0.3, h: crownSize * 0.25 },
+                        { x: 30, y: 55, w: crownSize * 0.4, h: crownSize * 0.3 },
+                        { x: -5, y: 40, w: crownSize * 0.3, h: crownSize * 0.25 },
+                        { x: 60, y: 20, w: crownSize * 0.25, h: crownSize * 0.2 },
+                        { x: 20, y: 70, w: crownSize * 0.35, h: crownSize * 0.25 },
+                        { x: 45, y: 60, w: crownSize * 0.28, h: crownSize * 0.22 },
+                        { x: 10, y: 15, w: crownSize * 0.32, h: crownSize * 0.26 }
+                    ];
+                    
+                    detailClusters.forEach((detail, index) => {
+                        const detailEl = document.createElement('div');
+                        detailEl.className = 'crown-detail';
+                        detailEl.style.cssText = `
+                            left: ${detail.x}px;
+                            top: ${detail.y}px;
+                            width: ${detail.w}px;
+                            height: ${detail.h}px;
+                            --detail-light: ${colors.detailLight};
+                            --detail-color: ${colors.detailColor};
+                            --detail-dark: ${colors.detailDark};
+                            z-index: ${15 + index};
+                        `;
+                        crown.appendChild(detailEl);
+                    });
+                    
+                    // Add highlights
+                    const highlights = [
+                        { x: 10, y: 15, w: crownSize * 0.4, h: crownSize * 0.35 },
+                        { x: 40, y: 25, w: crownSize * 0.3, h: crownSize * 0.25 }
+                    ];
+                    
+                    highlights.forEach(hl => {
+                        const highlight = document.createElement('div');
+                        highlight.className = 'crown-highlight';
+                        highlight.style.cssText = `
+                            left: ${hl.x}px;
+                            top: ${hl.y}px;
+                            width: ${hl.w}px;
+                            height: ${hl.h}px;
+                            z-index: 20;
+                        `;
+                        crown.appendChild(highlight);
+                    });
+                    
+                    tree.appendChild(crown);
                     scene.appendChild(tree);
                     this.trees.push(tree);
                 }
